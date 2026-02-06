@@ -9,92 +9,105 @@
 
     <style>
         body {
-            background: linear-gradient(135deg, #ffd6e8, #ffe6f2);
-            color: #b30059;
+            margin: 0;
+            background: linear-gradient(135deg, #ffdbe9, #ffeaf2);
+            color: #9c0d45;
             font-family: 'Pacifico', cursive;
             text-align: center;
-            padding: 60px;
+            padding: 50px 20px;
             overflow: hidden;
         }
 
         h1 {
-            font-size: 3.2em;
-            margin-bottom: 10px;
+            font-size: 2.8em;
+            margin-bottom: 8px;
+            font-weight: normal;
         }
 
         h2 {
-            font-size: 2.2em;
-            margin-bottom: 50px;
+            font-size: 2em;
+            margin-bottom: 40px;
+            font-weight: normal;
         }
 
         .buttons {
             position: relative;
-            height: 120px;
+            height: 100px;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 80px;
+            gap: 70px;
         }
 
         button {
-            font-size: 1.6em;
-            padding: 18px 40px;
+            font-size: 1.4em;
+            padding: 14px 34px;
             border: none;
-            border-radius: 40px;
+            border-radius: 30px;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-family: inherit;
         }
 
         #yes {
-            background-color: #ff4d88;
+            background-color: #ff5c8a;
             color: white;
         }
 
         #yes:hover {
-            transform: scale(1.4);
-            background-color: #ff1a66;
+            transform: scale(1.25);
+            background-color: #ff3d76;
         }
 
         #no {
-            background-color: #ffe6f0;
-            color: #b30059;
+            background-color: #ffe3ee;
+            color: #9c0d45;
             position: relative;
         }
 
-        /* Popup */
+        /* Popup overlay */
         .popup {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(255, 214, 232, 0.95);
+            background: rgba(255, 225, 238, 0.9);
+            display: flex;
             align-items: center;
             justify-content: center;
             z-index: 10;
         }
 
+        .popup.hidden {
+            display: none;
+        }
+
         .popup-content {
             background: white;
-            padding: 50px 60px;
-            border-radius: 30px;
-            font-size: 2em;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            padding: 35px 45px;
+            border-radius: 25px;
+            max-width: 520px;
+            font-size: 1.4em;
+            line-height: 1.6;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.12);
             position: relative;
         }
 
         .close {
             position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 1.2em;
+            top: 12px;
+            right: 18px;
             cursor: pointer;
+            font-size: 1.1em;
+            color: #9c0d45;
         }
 
         /* Floating hearts */
         .heart {
             position: absolute;
-            font-size: 2em;
+            font-size: 1.6em;
             animation: float 6s linear infinite;
-            opacity: 0.8;
+            opacity: 0.7;
+            pointer-events: none;
         }
 
         @keyframes float {
@@ -102,7 +115,7 @@
                 transform: translateY(100vh);
                 opacity: 0;
             }
-            50% {
+            40% {
                 opacity: 1;
             }
             100% {
@@ -123,17 +136,18 @@
     </div>
 
     <!-- Popup -->
-    <div class="popup-content poem">
-        <div class="close" id="closePopup">✕</div>
-    
-        Loving you was never a choice<br>
-        but a truth I never questioned.<br><br>
-    
-        as natural as the stars that hang above us<br>
-        silent but always there,<br>
-        guiding me home to you.
+    <div class="popup hidden" id="popup">
+        <div class="popup-content">
+            <div class="close" id="closePopup">✕</div>
+
+            Loving you was never a choice<br>
+            but a truth I never questioned.<br><br>
+
+            as natural as the stars that hang above us<br>
+            silent but always there,<br>
+            guiding me home to you.
+        </div>
     </div>
-    
 
     <script>
         const noButton = document.getElementById("no");
@@ -141,34 +155,35 @@
         const popup = document.getElementById("popup");
         const closePopup = document.getElementById("closePopup");
 
-        // Make NO button dodge nearby (not off screen)
-        noButton.addEventListener("mouseover", () => {
-            const moveX = (Math.random() * 200) - 100;
-            const moveY = (Math.random() * 100) - 50;
+        // Keep popup hidden on load
+        popup.classList.add("hidden");
 
-            noButton.style.transform = `translate(${moveX}px, ${moveY}px)`;
+        // No button dodges nearby
+        noButton.addEventListener("mouseenter", () => {
+            const x = (Math.random() * 160) - 80;
+            const y = (Math.random() * 80) - 40;
+            noButton.style.transform = `translate(${x}px, ${y}px)`;
         });
 
-        // Reset position when mouse leaves
         noButton.addEventListener("mouseleave", () => {
             noButton.style.transform = "translate(0, 0)";
         });
 
-        // YES button popup
+        // Show popup on YES
         yesButton.addEventListener("click", () => {
-            popup.style.display = "flex";
+            popup.classList.remove("hidden");
         });
 
         // Close popup
         closePopup.addEventListener("click", () => {
-            popup.style.display = "none";
+            popup.classList.add("hidden");
         });
 
         // Floating hearts
         function createHeart() {
             const heart = document.createElement("div");
-            heart.classList.add("heart");
-            heart.innerHTML = "💗";
+            heart.className = "heart";
+            heart.textContent = "💗";
             heart.style.left = Math.random() * 100 + "vw";
             heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
             document.body.appendChild(heart);
@@ -176,11 +191,12 @@
             setTimeout(() => heart.remove(), 6000);
         }
 
-        setInterval(createHeart, 300);
+        setInterval(createHeart, 350);
     </script>
 
 </body>
 </html>
+
 
 
 
