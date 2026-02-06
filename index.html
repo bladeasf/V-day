@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Will You Be My Valentine?</title>
 
-    <!-- Cute Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
 
     <style>
         body {
             background: linear-gradient(135deg, #ffd6e8, #ffe6f2);
-            color: #eb3992;
+            color: #b30059;
             font-family: 'Pacifico', cursive;
             text-align: center;
             padding: 60px;
@@ -25,14 +24,16 @@
 
         h2 {
             font-size: 2.2em;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
         }
 
         .buttons {
             position: relative;
+            height: 120px;
             display: flex;
             justify-content: center;
-            gap: 40px;
+            align-items: center;
+            gap: 80px;
         }
 
         button {
@@ -57,7 +58,7 @@
         #no {
             background-color: #ffe6f0;
             color: #b30059;
-            position: absolute;
+            position: relative;
         }
 
         /* Popup */
@@ -73,10 +74,19 @@
 
         .popup-content {
             background: white;
-            padding: 50px;
+            padding: 50px 60px;
             border-radius: 30px;
             font-size: 2em;
             box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.2em;
+            cursor: pointer;
         }
 
         /* Floating hearts */
@@ -115,6 +125,7 @@
     <!-- Popup -->
     <div class="popup" id="popup">
         <div class="popup-content">
+            <div class="close" id="closePopup">✕</div>
             💕 YAYYY 💕 <br><br>
             I knew you’d say yes 🥰<br>
             Happy Valentine’s Day 💘
@@ -125,13 +136,19 @@
         const noButton = document.getElementById("no");
         const yesButton = document.getElementById("yes");
         const popup = document.getElementById("popup");
+        const closePopup = document.getElementById("closePopup");
 
-        // Make NO button run away
+        // Make NO button dodge nearby (not off screen)
         noButton.addEventListener("mouseover", () => {
-            const x = Math.random() * (window.innerWidth - 100);
-            const y = Math.random() * (window.innerHeight - 100);
-            noButton.style.left = `${x}px`;
-            noButton.style.top = `${y}px`;
+            const moveX = (Math.random() * 200) - 100;
+            const moveY = (Math.random() * 100) - 50;
+
+            noButton.style.transform = `translate(${moveX}px, ${moveY}px)`;
+        });
+
+        // Reset position when mouse leaves
+        noButton.addEventListener("mouseleave", () => {
+            noButton.style.transform = "translate(0, 0)";
         });
 
         // YES button popup
@@ -139,7 +156,12 @@
             popup.style.display = "flex";
         });
 
-        // Floating hearts generator
+        // Close popup
+        closePopup.addEventListener("click", () => {
+            popup.style.display = "none";
+        });
+
+        // Floating hearts
         function createHeart() {
             const heart = document.createElement("div");
             heart.classList.add("heart");
@@ -148,9 +170,7 @@
             heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
             document.body.appendChild(heart);
 
-            setTimeout(() => {
-                heart.remove();
-            }, 6000);
+            setTimeout(() => heart.remove(), 6000);
         }
 
         setInterval(createHeart, 300);
@@ -158,6 +178,7 @@
 
 </body>
 </html>
+
 
 
 
