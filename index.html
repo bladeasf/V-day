@@ -3,65 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Valentine's Day!</title>
+    <title>Will You Be My Valentine?</title>
+
+    <!-- Cute Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
     <style>
         body {
-            background-color: rgb(154, 6, 31);
-            color: rgb(3, 74, 43);
-            font-family: 'Courier New', Courier, monospace;
+            background: linear-gradient(135deg, #ffd6e8, #ffe6f2);
+            color: #eb3992;
+            font-family: 'Pacifico', cursive;
             text-align: center;
-            padding: 50px;
+            padding: 60px;
+            overflow: hidden;
         }
-        h2 {
-            font-size: 2em;
-        }
+
         h1 {
-            font-size: 4em;
-            margin-bottom: 20px;
+            font-size: 3.2em;
+            margin-bottom: 10px;
         }
-        .flowers {
-            margin-top: 30px;
+
+        h2 {
+            font-size: 2.2em;
+            margin-bottom: 40px;
+        }
+
+        .buttons {
+            position: relative;
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 40px;
         }
-        .flower {
-            width: 150px;
-            height: 150px;
+
+        button {
+            font-size: 1.6em;
+            padding: 18px 40px;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #yes {
+            background-color: #ff4d88;
+            color: white;
+        }
+
+        #yes:hover {
+            transform: scale(1.4);
+            background-color: #ff1a66;
+        }
+
+        #no {
+            background-color: #ffe6f0;
+            color: #b30059;
+            position: absolute;
+        }
+
+        /* Popup */
+        .popup {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 214, 232, 0.95);
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .popup-content {
+            background: white;
+            padding: 50px;
+            border-radius: 30px;
+            font-size: 2em;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        /* Floating hearts */
+        .heart {
+            position: absolute;
+            font-size: 2em;
+            animation: float 6s linear infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh);
+                opacity: 0;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>HAPPY VALENTINE'S DAY BASUNA!</h1>
-    <h2>I LOVE YOU ENDLESSLY</h2>
-    <div class="flowers">
-        <svg class="flower" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="10" fill="yellow" />
-            <circle cx="50" cy="20" r="15" fill="blue" />
-            <circle cx="80" cy="50" r="15" fill="blue" />
-            <circle cx="50" cy="80" r="15" fill="blue" />
-            <circle cx="20" cy="50" r="15" fill="blue" />
-        </svg>
 
-        <svg class="flower" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="10" fill="yellow" />
-            <circle cx="50" cy="20" r="15" fill="purple" />
-            <circle cx="80" cy="50" r="15" fill="purple" />
-            <circle cx="50" cy="80" r="15" fill="purple" />
-            <circle cx="20" cy="50" r="15" fill="purple" />
-        </svg>
+    <h1>💘 Hey Basuna 💘</h1>
+    <h2>Will you be my Valentine?</h2>
 
-        <svg class="flower" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="10" fill="yellow" />
-            <circle cx="50" cy="20" r="15" fill="pink" />
-            <circle cx="80" cy="50" r="15" fill="pink" />
-            <circle cx="50" cy="80" r="15" fill="pink" />
-            <circle cx="20" cy="50" r="15" fill="pink" />
-        </svg>
+    <div class="buttons">
+        <button id="yes">Yes 💖</button>
+        <button id="no">No 🙈</button>
     </div>
-</div>
+
+    <!-- Popup -->
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            💕 YAYYY 💕 <br><br>
+            I knew you’d say yes 🥰<br>
+            Happy Valentine’s Day 💘
+        </div>
+    </div>
+
+    <script>
+        const noButton = document.getElementById("no");
+        const yesButton = document.getElementById("yes");
+        const popup = document.getElementById("popup");
+
+        // Make NO button run away
+        noButton.addEventListener("mouseover", () => {
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 100);
+            noButton.style.left = `${x}px`;
+            noButton.style.top = `${y}px`;
+        });
+
+        // YES button popup
+        yesButton.addEventListener("click", () => {
+            popup.style.display = "flex";
+        });
+
+        // Floating hearts generator
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+            heart.innerHTML = "💗";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+
+        setInterval(createHeart, 300);
+    </script>
+
 </body>
 </html>
+
 
 
 
